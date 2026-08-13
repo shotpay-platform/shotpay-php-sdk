@@ -1,0 +1,31 @@
+{
+    "name": "shotpay/php-sdk",
+    "description": "Minimal PHP client for the ShotPay Checkout API: open and retrieve checkout sessions, and verify inbound webhook signatures.",
+    "type": "library",
+    "license": "MIT",
+    "version": "0.1.0",
+    "keywords": ["shotpay", "bnpl", "layaway", "checkout"],
+    "require": {
+        "php": "^8.2",
+        "guzzlehttp/guzzle": "^7.9"
+    },
+    "require-dev": {
+        "pestphp/pest": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ShotPay\\Sdk\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ShotPay\\Sdk\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "stable"
+}
