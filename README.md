@@ -20,7 +20,7 @@ $client = new ShotPayClient(
 
 $session = $client->createCheckoutSession([
     'order_reference' => 'ORD-1001',
-    'total_amount' => 499.99,
+    'total_amount' => 49999, // integer cents — $499.99
     'return_url' => 'https://store.example/checkout/complete',
     'cancel_url' => 'https://store.example/cart',
 ], idempotencyKey: 'a-uuid-per-checkout-attempt');

@@ -37,9 +37,10 @@ final class ShotPayClient
      * exact call safe — replaying the same key with the same params returns
      * the original session rather than opening a second one.
      *
-     * @param  array<string, mixed>  $params  order_reference, total_amount,
-     *                                        return_url, cancel_url, and
-     *                                        optionally customer_email,
+     * @param  array<string, mixed>  $params  order_reference, total_amount
+     *                                        (integer minor units — 42900 for
+     *                                        $429.00), return_url, cancel_url,
+     *                                        and optionally customer_email,
      *                                        customer_state.
      */
     public function createCheckoutSession(array $params, ?string $idempotencyKey = null): CheckoutSession
