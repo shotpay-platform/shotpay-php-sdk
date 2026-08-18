@@ -4,7 +4,7 @@ namespace ShotPay\Sdk;
 
 /**
  * Mirrors the fields `CheckoutSessionResource` returns from both
- * `POST /widget/sessions` and `GET /widget/checkout-sessions/{id}`.
+ * `POST /v1/sessions` and `GET /v1/checkout-sessions/{id}`.
  */
 final class CheckoutSession
 {

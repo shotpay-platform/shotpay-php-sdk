@@ -10,7 +10,7 @@ use ShotPay\Sdk\Exceptions\ShotPayApiException;
  * A thin wrapper around the checkout session lifecycle documented at
  * https://shotpay-platform.test/docs/api/ — open a session, retrieve one your
  * server opened, and (via `WebhookSignatureVerifier`) confirm a delivery is
- * genuine. Not a full API client: everything else in the widget API is called
+ * genuine. Not a full API client: everything else in the ShotPay API is called
  * directly, the same way this client is built.
  */
 final class ShotPayClient
@@ -20,7 +20,7 @@ final class ShotPayClient
     public function __construct(
         private readonly string $clientId,
         private readonly string $apiKey,
-        string $baseUrl = 'https://shotpay-platform.test/api',
+        string $baseUrl = 'https://sandbox.shotpay.com/api',
     ) {
         $this->http = new Client([
             'base_uri' => rtrim($baseUrl, '/').'/',
@@ -33,7 +33,7 @@ final class ShotPayClient
     }
 
     /**
-     * `POST /widget/sessions`. Pass `$idempotencyKey` to make a retry of this
+     * `POST /v1/sessions`. Pass `$idempotencyKey` to make a retry of this
      * exact call safe — replaying the same key with the same params returns
      * the original session rather than opening a second one.
      *
@@ -51,17 +51,17 @@ final class ShotPayClient
             $headers['Idempotency-Key'] = $idempotencyKey;
         }
 
-        return $this->call('POST', 'widget/sessions', ['json' => $params, 'headers' => $headers]);
+        return $this->call('POST', 'v1/sessions', ['json' => $params, 'headers' => $headers]);
     }
 
     /**
-     * `GET /widget/checkout-sessions/{id}`. The server-to-server counterpart
+     * `GET /v1/checkout-sessions/{id}`. The server-to-server counterpart
      * to create — ask what happened to a session without waiting on a
-     * webhook. Requires a key with the `widget:read` scope.
+     * webhook. Requires a key with the `checkout:read` scope.
      */
     public function retrieveCheckoutSession(string $id): CheckoutSession
     {
-        return $this->call('GET', 'widget/checkout-sessions/'.rawurlencode($id));
+        return $this->call('GET', 'v1/checkout-sessions/'.rawurlencode($id));
     }
 
     /**
