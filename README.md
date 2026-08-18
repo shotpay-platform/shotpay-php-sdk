@@ -1,4 +1,4 @@
-# shotpay/php-sdk
+# shotpay/php
 
 A minimal PHP client for the ShotPay Checkout API. Covers the checkout
 session lifecycle and webhook signature verification — nothing else. For

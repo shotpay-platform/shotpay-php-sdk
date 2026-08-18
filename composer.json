@@ -1,5 +1,5 @@
 {
-    "name": "shotpay/php-sdk",
+    "name": "shotpay/php",
     "description": "Minimal PHP client for the ShotPay Checkout API: open and retrieve checkout sessions, and verify inbound webhook signatures.",
     "type": "library",
     "license": "MIT",
