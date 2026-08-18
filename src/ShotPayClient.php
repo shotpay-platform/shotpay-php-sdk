@@ -20,7 +20,7 @@ final class ShotPayClient
     public function __construct(
         private readonly string $clientId,
         private readonly string $apiKey,
-        string $baseUrl = 'https://shotpay-platform.test/api',
+        string $baseUrl = 'https://sandbox.shotpay.com/api',
     ) {
         $this->http = new Client([
             'base_uri' => rtrim($baseUrl, '/').'/',
