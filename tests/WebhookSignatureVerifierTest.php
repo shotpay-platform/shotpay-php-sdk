@@ -11,7 +11,7 @@ function sdkSign(string $payload, string $secret, int $timestamp): string
 
 beforeEach(function () {
     $this->secret = 'whsec_testing';
-    $this->payload = '{"id":"evt_1","type":"installment.paid"}';
+    $this->payload = '{"id":"evt_1","type":"contract.paid"}';
 });
 
 test('a signature verifies against the bytes it was made from', function () {
