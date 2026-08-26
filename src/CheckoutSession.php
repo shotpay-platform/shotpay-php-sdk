@@ -21,6 +21,8 @@ final class CheckoutSession
         public readonly string $cancelUrl,
         public readonly string $expiresAt,
         public readonly string $createdAt,
+        /** @var array<string, string> Your own key/value pairs, as sent on create. */
+        public readonly array $metadata = [],
     ) {}
 
     /**
@@ -40,6 +42,9 @@ final class CheckoutSession
             cancelUrl: (string) $data['cancel_url'],
             expiresAt: (string) $data['expires_at'],
             createdAt: (string) $data['created_at'],
+            // Defaulted for a client pinned to a build of this package that
+            // predates the field meeting a payload that carries it.
+            metadata: array_map('strval', (array) ($data['metadata'] ?? [])),
         );
     }
 }
