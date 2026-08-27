@@ -3,92 +3,65 @@
 namespace ShotPay\Sdk;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
-use ShotPay\Sdk\Exceptions\ShotPayApiException;
+use GuzzleHttp\HandlerStack;
+use ShotPay\Sdk\Resources\CheckoutSessions;
+use ShotPay\Sdk\Resources\Contracts;
 
 /**
- * A thin wrapper around the checkout session lifecycle documented at
- * https://shotpay-platform.test/docs/api/ — open a session, retrieve one your
- * server opened, and (via `WebhookSignatureVerifier`) confirm a delivery is
- * genuine. Not a full API client: everything else in the ShotPay API is called
- * directly, the same way this client is built.
+ * A client for the ShotPay API documented at
+ * https://shotpay-platform.test/docs/api/ — the checkout session lifecycle
+ * under `$checkoutSessions`, your agreements under `$contracts`, and (via
+ * `WebhookSignatureVerifier`) confirmation that a delivery is genuine.
+ * Endpoints without a resource here stay callable directly, the same way this
+ * client is built.
  */
 final class ShotPayClient
 {
-    private Client $http;
+    public readonly CheckoutSessions $checkoutSessions;
 
+    public readonly Contracts $contracts;
+
+    /**
+     * @param  HandlerStack|null  $handler  A test seam. Build it with
+     *                                      `HandlerStack::create()` so the
+     *                                      `http_errors` middleware still maps
+     *                                      a 4xx onto an exception.
+     */
     public function __construct(
-        private readonly string $clientId,
-        private readonly string $apiKey,
+        string $clientId,
+        string $apiKey,
         string $baseUrl = 'https://sandbox.shotpay.com/api',
+        ?HandlerStack $handler = null,
     ) {
-        $this->http = new Client([
+        $transport = new Transport(new Client([
             'base_uri' => rtrim($baseUrl, '/').'/',
             'headers' => [
-                'X-Client-Id' => $this->clientId,
-                'X-Api-Key' => $this->apiKey,
+                'X-Client-Id' => $clientId,
+                'X-Api-Key' => $apiKey,
                 'Accept' => 'application/json',
             ],
-        ]);
+            ...($handler === null ? [] : ['handler' => $handler]),
+        ]));
+
+        $this->checkoutSessions = new CheckoutSessions($transport);
+        $this->contracts = new Contracts($transport);
     }
 
     /**
-     * `POST /v1/sessions`. Pass `$idempotencyKey` to make a retry of this
-     * exact call safe — replaying the same key with the same params returns
-     * the original session rather than opening a second one.
+     * @deprecated 0.2.0 Use `$client->checkoutSessions->create()`. Removed in 0.3.0.
      *
-     * @param  array<string, mixed>  $params  order_reference, total_amount
-     *                                        (integer minor units — 42900 for
-     *                                        $429.00), return_url, cancel_url,
-     *                                        and optionally customer_email,
-     *                                        customer_state, and metadata —
-     *                                        your own string key/value pairs,
-     *                                        echoed back on the session and on
-     *                                        the contract it becomes. Max 50
-     *                                        keys; keys 40 chars, values 500.
+     * @param  array<string, mixed>  $params
      */
     public function createCheckoutSession(array $params, ?string $idempotencyKey = null): CheckoutSession
     {
-        $headers = [];
-
-        if ($idempotencyKey !== null) {
-            $headers['Idempotency-Key'] = $idempotencyKey;
-        }
-
-        return $this->call('POST', 'v1/sessions', ['json' => $params, 'headers' => $headers]);
+        return $this->checkoutSessions->create($params, $idempotencyKey);
     }
 
     /**
-     * `GET /v1/checkout-sessions/{id}`. The server-to-server counterpart
-     * to create — ask what happened to a session without waiting on a
-     * webhook. Requires a key with the `checkout:read` scope.
+     * @deprecated 0.2.0 Use `$client->checkoutSessions->retrieve()`. Removed in 0.3.0.
      */
     public function retrieveCheckoutSession(string $id): CheckoutSession
     {
-        return $this->call('GET', 'v1/checkout-sessions/'.rawurlencode($id));
-    }
-
-    /**
-     * @param  array<string, mixed>  $options
-     */
-    private function call(string $method, string $path, array $options = []): CheckoutSession
-    {
-        try {
-            $response = $this->http->request($method, $path, $options);
-        } catch (RequestException $exception) {
-            $response = $exception->getResponse();
-
-            if ($response === null) {
-                throw $exception;
-            }
-
-            $body = json_decode((string) $response->getBody(), true);
-
-            throw new ShotPayApiException($response->getStatusCode(), is_array($body) ? $body : []);
-        }
-
-        $body = json_decode((string) $response->getBody(), true);
-
-        return CheckoutSession::fromArray($body['data']);
+        return $this->checkoutSessions->retrieve($id);
     }
 }
