@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    `cacheDirectory` is load-bearing, not decoration. With no XML configuration
+    declaring one, Pest synthesises the cache directory argument itself from
+    `realpath()` on a folder shipped inside vendor. On a fresh install where
+    that folder is absent `realpath()` returns false, the argument is pushed
+    with an empty value, and PHPUnit reads the next argument as its config file
+    instead — which fails as "Could not read XML from file". Declaring it here
+    means the argument is never synthesised.
+-->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         cacheDirectory=".phpunit.cache"
+         colors="true"
+>
+    <testsuites>
+        <testsuite name="Package">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory>src</directory>
+        </include>
+    </source>
+</phpunit>
