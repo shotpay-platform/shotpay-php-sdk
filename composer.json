@@ -1,10 +1,10 @@
 {
     "name": "shotpay/php",
-    "description": "Minimal PHP client for the ShotPay Checkout API: open and retrieve checkout sessions, and verify inbound webhook signatures.",
+    "description": "PHP client for the ShotPay API: open and retrieve checkout sessions, work your layaway contracts, and verify inbound webhook signatures.",
     "type": "library",
     "license": "MIT",
-    "version": "0.1.0",
-    "keywords": ["shotpay", "bnpl", "layaway", "checkout"],
+    "version": "0.2.0",
+    "keywords": ["shotpay", "bnpl", "layaway", "checkout", "contracts"],
     "require": {
         "php": "^8.2",
         "guzzlehttp/guzzle": "^7.9"
