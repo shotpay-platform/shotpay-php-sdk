@@ -13,14 +13,14 @@ final class Contract
     public function __construct(
         public readonly string $reference,
         public readonly ?string $orderReference,
-        /** One of `active`, `completed`, `cancelled`, `defaulted`. */
+        /** One of `pending`, `active`, `completed`, `cancelled`, `defaulted`. */
         public readonly string $status,
         public readonly string $customerName,
         public readonly string $customerEmail,
         public readonly ?string $customerState,
         /** The order total before the fee. */
         public readonly int $totalAmount,
-        public readonly int $serviceFeeAmount,
+        public readonly int $reservationFeeAmount,
         /** The order total plus the fee — what the plan collects in all. */
         public readonly int $customerTotal,
         public readonly int $downPaymentAmount,
@@ -50,7 +50,7 @@ final class Contract
             customerEmail: (string) $data['customer_email'],
             customerState: isset($data['customer_state']) ? (string) $data['customer_state'] : null,
             totalAmount: (int) $data['total_amount'],
-            serviceFeeAmount: (int) $data['service_fee_amount'],
+            reservationFeeAmount: (int) $data['reservation_fee_amount'],
             customerTotal: (int) $data['customer_total'],
             downPaymentAmount: (int) $data['down_payment_amount'],
             paidAmount: (int) $data['paid_amount'],
