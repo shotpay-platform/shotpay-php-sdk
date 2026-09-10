@@ -69,7 +69,7 @@ test('retrieve maps every field including the schedule', function () {
         ->and($contract->customerEmail)->toBe('dana@example.com')
         ->and($contract->customerState)->toBe('CA')
         ->and($contract->totalAmount)->toBe(100000)
-        ->and($contract->serviceFeeAmount)->toBe(5000)
+        ->and($contract->reservationFeeAmount)->toBe(5000)
         ->and($contract->customerTotal)->toBe(105000)
         ->and($contract->downPaymentAmount)->toBe(26250)
         ->and($contract->paidAmount)->toBe(26250)
