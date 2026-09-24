@@ -12,6 +12,8 @@ final class CheckoutSession
         public readonly string $id,
         public readonly string $status,
         public readonly string $orderReference,
+        /** Whether the customer must pick an FFL dealer before confirming. */
+        public readonly bool $fflRequired,
         /** Integer minor units (cents) — 42900 is $429.00. */
         public readonly int $totalAmount,
         public readonly int $downPaymentAmount,
@@ -34,6 +36,7 @@ final class CheckoutSession
             id: (string) $data['id'],
             status: (string) $data['status'],
             orderReference: (string) $data['order_reference'],
+            fflRequired: (bool) $data['ffl_required'],
             totalAmount: (int) $data['total_amount'],
             downPaymentAmount: (int) $data['down_payment_amount'],
             downPaymentPercentage: (int) $data['down_payment_percentage'],
