@@ -29,6 +29,15 @@ final class CheckoutSessions
      *                                        echoed back on the session and on
      *                                        the contract it becomes. Max 50
      *                                        keys; keys 40 chars, values 500.
+     *                                        Also optionally items — what the
+     *                                        customer is buying, one entry per
+     *                                        cart line, at most 50 — and
+     *                                        items_source, naming the platform
+     *                                        whose own lines they are
+     *                                        (shopify, woocommerce, magento,
+     *                                        bigcommerce) or shotpay, the
+     *                                        default: name, sku, quantity,
+     *                                        unit_amount (cents), image_url.
      */
     public function create(array $params, ?string $idempotencyKey = null): CheckoutSession
     {

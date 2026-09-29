@@ -3,7 +3,7 @@
     "description": "PHP client for the ShotPay API: open and retrieve checkout sessions, work your layaway contracts, and verify inbound webhook signatures.",
     "type": "library",
     "license": "MIT",
-    "version": "0.3.0",
+    "version": "0.4.0",
     "keywords": ["shotpay", "bnpl", "layaway", "checkout", "contracts"],
     "require": {
         "php": "^8.2",

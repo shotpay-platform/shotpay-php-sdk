@@ -81,7 +81,13 @@ test('retrieve maps every field including the schedule', function () {
         ->and($contract->installments[0]->dueDate)->toBe('2026-09-25')
         ->and($contract->installments[0]->status)->toBe('paid')
         ->and($contract->installments[0]->paidAt)->toBe('2026-09-25T10:00:00.000000Z')
-        ->and($contract->installments[1]->paidAt)->toBeNull();
+        ->and($contract->installments[1]->paidAt)->toBeNull()
+        ->and($contract->items)->toHaveCount(1)
+        ->and($contract->items[0]->name)->toBe('Hunting Rifle')
+        ->and($contract->items[0]->sku)->toBe('RF-100')
+        ->and($contract->items[0]->quantity)->toBe(1)
+        ->and($contract->items[0]->unitAmount)->toBe(100000)
+        ->and($contract->items[0]->imageUrl)->toBe('https://cdn.store.example/rifle.jpg');
 });
 
 test('the nullable fields survive arriving null', function () {
@@ -199,4 +205,15 @@ test('a truncated success body raises rather than returning a half-built contrac
 
     expect(fn () => $client->contracts->retrieve('LAY-XK2M9QPR7V'))
         ->toThrow(ShotPayApiException::class, 'The ShotPay API returned a response without a `data` object.');
+});
+
+test('an item with no SKU or image maps both to null', function () {
+    $client = sdkClient([jsonResponse(['data' => contractPayload([
+        'items' => [['name' => 'Gift wrap', 'sku' => null, 'quantity' => 1, 'unit_amount' => 0, 'image_url' => null]],
+    ])])]);
+
+    $item = $client->contracts->retrieve('LAY-XK2M9QPR7V')->items[0];
+
+    expect($item->sku)->toBeNull()
+        ->and($item->imageUrl)->toBeNull();
 });

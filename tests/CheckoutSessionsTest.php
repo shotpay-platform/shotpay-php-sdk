@@ -18,6 +18,7 @@ function sessionPayload(array $overrides = []): array
         'expires_at' => '2026-08-26T12:00:00.000000Z',
         'created_at' => '2026-08-26T11:00:00.000000Z',
         'metadata' => [],
+        'items' => [],
         ...$overrides,
     ];
 }
@@ -40,6 +41,27 @@ test('create posts the params and maps the session', function () {
         ->and($session->id)->toBe('cs_test_123')
         ->and($session->totalAmount)->toBe(49999)
         ->and($session->checkoutUrl)->toBe('https://sandbox.shotpay.com/c/cs_test_123');
+});
+
+test('create sends items with the platform they came from and maps the ones returned', function () {
+    $history = [];
+    $client = sdkClient([jsonResponse(['data' => sessionPayload([
+        'items' => [['name' => 'Beanie', 'sku' => 'BN-1', 'quantity' => 2, 'unit_amount' => 1800, 'image_url' => null]],
+    ])])], $history);
+
+    $session = $client->checkoutSessions->create([
+        'order_reference' => 'ORD-1001',
+        'total_amount' => 3600,
+        'return_url' => 'https://store.example/checkout/complete',
+        'cancel_url' => 'https://store.example/cart',
+        'items_source' => 'shopify',
+        'items' => [['title' => 'Beanie', 'sku' => 'BN-1', 'quantity' => 2, 'final_price' => 1800]],
+    ]);
+
+    expect(json_decode((string) $history[0]['request']->getBody(), true)['items_source'])->toBe('shopify')
+        ->and($session->items)->toHaveCount(1)
+        ->and($session->items[0]->name)->toBe('Beanie')
+        ->and($session->items[0]->unitAmount)->toBe(1800);
 });
 
 test('the idempotency key is sent only when one is supplied', function () {

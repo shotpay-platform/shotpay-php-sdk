@@ -35,6 +35,8 @@ final class Contract
         public readonly string $createdAt,
         /** @var array<string, string> Your own key/value pairs. */
         public readonly array $metadata = [],
+        /** @var array<int, OrderItem> What the customer bought, carried over from the session. */
+        public readonly array $items = [],
     ) {}
 
     /**
@@ -67,6 +69,11 @@ final class Contract
             // Defaulted for a client pinned to a build of this package that
             // predates the field meeting a payload that carries it.
             metadata: array_map('strval', (array) ($data['metadata'] ?? [])),
+            // Defaulted for the same reason as `metadata`.
+            items: array_map(
+                static fn (array $item): OrderItem => OrderItem::fromArray($item),
+                (array) ($data['items'] ?? []),
+            ),
         );
     }
 }

@@ -30,6 +30,7 @@ $session = $client->checkoutSessions->create([
     'total_amount' => 49999, // integer cents — $499.99
     'return_url' => 'https://store.example/checkout/complete',
     'cancel_url' => 'https://store.example/cart',
+    'items' => [['name' => 'Hunting Rifle', 'sku' => 'RF-100', 'quantity' => 1, 'unit_amount' => 49999]],
 ], idempotencyKey: 'a-uuid-per-checkout-attempt');
 
 // Later, from your own server:
