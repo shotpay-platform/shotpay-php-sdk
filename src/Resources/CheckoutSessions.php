@@ -31,7 +31,8 @@ final class CheckoutSessions
      *                                        keys; keys 40 chars, values 500.
      *                                        Also optionally items — what the
      *                                        customer is buying, one entry per
-     *                                        cart line, at most 50 — and
+     *                                        cart line, each shape with its own
+     *                                        line limit (50 for both today) — and
      *                                        items_source: shotpay, the
      *                                        default, for lines of name, sku,
      *                                        quantity, unit_amount (cents) and
