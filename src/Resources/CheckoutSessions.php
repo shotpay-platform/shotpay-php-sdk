@@ -32,12 +32,11 @@ final class CheckoutSessions
      *                                        Also optionally items — what the
      *                                        customer is buying, one entry per
      *                                        cart line, at most 50 — and
-     *                                        items_source, naming the platform
-     *                                        whose own lines they are
-     *                                        (shopify, woocommerce, magento,
-     *                                        bigcommerce) or shotpay, the
-     *                                        default: name, sku, quantity,
-     *                                        unit_amount (cents), image_url.
+     *                                        items_source: shotpay, the
+     *                                        default, for lines of name, sku,
+     *                                        quantity, unit_amount (cents) and
+     *                                        image_url, or bigcommerce for
+     *                                        BigCommerce's own cart lines.
      */
     public function create(array $params, ?string $idempotencyKey = null): CheckoutSession
     {

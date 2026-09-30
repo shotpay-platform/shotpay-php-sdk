@@ -54,11 +54,11 @@ test('create sends items with the platform they came from and maps the ones retu
         'total_amount' => 3600,
         'return_url' => 'https://store.example/checkout/complete',
         'cancel_url' => 'https://store.example/cart',
-        'items_source' => 'shopify',
-        'items' => [['title' => 'Beanie', 'sku' => 'BN-1', 'quantity' => 2, 'final_price' => 1800]],
+        'items_source' => 'bigcommerce',
+        'items' => [['name' => 'Beanie', 'sku' => 'BN-1', 'quantity' => 2, 'sale_price' => 18]],
     ]);
 
-    expect(json_decode((string) $history[0]['request']->getBody(), true)['items_source'])->toBe('shopify')
+    expect(json_decode((string) $history[0]['request']->getBody(), true)['items_source'])->toBe('bigcommerce')
         ->and($session->items)->toHaveCount(1)
         ->and($session->items[0]->name)->toBe('Beanie')
         ->and($session->items[0]->unitAmount)->toBe(1800);
