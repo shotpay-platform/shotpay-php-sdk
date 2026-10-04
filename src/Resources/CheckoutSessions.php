@@ -22,7 +22,9 @@ final class CheckoutSessions
      *                                        (integer minor units — 42900 for
      *                                        $429.00), return_url, cancel_url,
      *                                        and optionally customer_email,
-     *                                        customer_state, and metadata —
+     *                                        customer_state, ffl_required (true
+     *                                        when the order ships a firearm to a
+     *                                        licensed dealer), and metadata —
      *                                        your own string key/value pairs,
      *                                        echoed back on the session and on
      *                                        the contract it becomes. Max 50
