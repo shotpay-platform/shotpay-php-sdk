@@ -1,0 +1,10 @@
+{
+    "name": "shotpay/php-consumer-e2e",
+    "type": "project",
+    "repositories": [
+        { "type": "artifact", "url": "artifacts" }
+    ],
+    "require": {
+        "shotpay/php": "*"
+    }
+}
